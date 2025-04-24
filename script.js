@@ -1,6 +1,9 @@
 let timer;
 let time = 25 * 60;
 let meowSound;
+let sessionCount = 0;
+let isBreak = false;
+
 
 // 🐱 Load meow on page load (no autoplay)
 window.onload = () => {
@@ -29,9 +32,9 @@ function setTime(minutes) {
   time = minutes * 60;
   clearInterval(timer);
   updateDisplay();
+  isBreak = false; // this is a work session
 }
 
-// ▶️ Start timer
 function startTimer() {
   clearInterval(timer);
 
@@ -43,7 +46,13 @@ function startTimer() {
       clearInterval(timer);
       playMeow();
 
-      // Notify only if not looking at tab
+      // 🧠 Only count if it's a focus session
+      if (!isBreak) {
+        sessionCount++;
+        updateSessionCounter();
+      }
+
+      // 🔔 Notify (only if tab isn't focused)
       if ("Notification" in window && Notification.permission === "granted") {
         if (!document.hasFocus()) {
           new Notification("Pomeowro says: Time’s up! 🐾");
@@ -58,6 +67,7 @@ function startTimer() {
     }
   }, 1000);
 }
+
 
 // 🔁 Reset to default 25 minutes
 function resetTimer() {
@@ -132,6 +142,7 @@ function startBreak(minutes) {
   clearInterval(timer);
   time = minutes * 60;
   updateDisplay();
+  isBreak = true; 
 
   timer = setInterval(() => {
     if (time > 0) {
@@ -152,6 +163,11 @@ function startBreak(minutes) {
       }
     }
   }, 1000);
+}
+
+function updateSessionCounter() {
+  const counter = document.getElementById("sessionCounter");
+  counter.innerText = `🍅 Pomodoros completed: ${sessionCount}`;
 }
 
 
