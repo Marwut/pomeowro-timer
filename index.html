@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Pomeowro Timer</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/timepaw.png">
 </head>
 <body>
   <div class="app">
@@ -14,8 +15,15 @@
       <button onclick="setTime(30)">30 min</button>
       <button onclick="setTime(45)">45 min</button>
       <button onclick="setTime(50)">50 min</button>
+      <button id="customToggle" onclick="toggleCustomInput()">Custom</button>
     </div>
-
+    
+    <!-- Custom input area (initially hidden) -->
+    <div id="customTimeContainer" style="display: none; text-align: center; margin-top: 10px;">
+      <input type="number" id="customTimeInput" placeholder="Minutes" min="1" style="padding: 6px; border-radius: 8px; width: 100px;">
+      <button onclick="setCustomTime()">Set</button>
+    </div>
+    
     <div class="timer" id="timer">25:00</div>
 
     <div class="controls">
@@ -25,6 +33,8 @@
 
     <p class="quote">Stay focused — you’ve got this!</p>
   </div>
+
+  <img src="images/output-onlinegiftools.gif" alt="Cat chilling" class="corner-cat">
 
   <script src="script.js"></script>
 </body>
