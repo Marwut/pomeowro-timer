@@ -118,3 +118,13 @@ function startQuoteRotation() {
     quoteElement.innerText = quotes[index];
   }, 5 * 60 * 1000); // 5 min
 }
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  const btn = document.querySelector(".dark-mode-toggle");
+  btn.innerText = document.body.classList.contains("dark-mode")
+    ? "☀️"
+    : "🌙";
+}
+
