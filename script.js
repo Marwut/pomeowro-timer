@@ -1,3 +1,30 @@
+
+window.onload = () => {
+  // Request notification permission
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission();
+  }
+
+  // Attempt to "unlock" audio by playing silently (won't actually play yet)
+  meowSound.play().catch(() => {
+    // Browsers will block this unless the user clicks something
+    console.log("Audio will be unlocked on user interaction.");
+  });
+
+  startQuoteRotation(); // move this here too so it's inside window.onload
+};
+
+
+// Function to play a meow sound
+const meowSound = new Audio("images/Audio/meow.mp3");
+
+function playMeow() {
+  meowSound.play().catch(err => {
+    console.log("Audio play failed:", err);
+  });
+}
+
+
 let timer;
 let time = 25 * 60;
 
@@ -33,6 +60,14 @@ function startTimer() {
     } else {
       clearInterval(timer);
       playMeow();
+
+  if (!document.hasFocus() && Notification.permission === "granted") {
+  new Notification("Pomeowro says: Time’s up! 🐾");
+  } else {
+  console.log("Time’s up! (no notification, tab is focused)");
+  }
+
+      resetTimer();
     }
   }, 1000);
 }
@@ -41,12 +76,6 @@ function resetTimer() {
   clearInterval(timer);
   setTime(25);
 }
-
-function playMeow() {
-    const audio = new Audio("meow.mp3");
-    audio.play();
-    console.log("Meow! Timer complete!");
-  }
 
   function toggleCustomInput() {
     const container = document.getElementById("customTimeContainer");
