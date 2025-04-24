@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomeowro Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <h1 class="title">Pomeowro Timer</h1>
+
+    <div class="buttons">
+      <button onclick="setTime(25)">25 min</button>
+      <button onclick="setTime(30)">30 min</button>
+      <button onclick="setTime(45)">45 min</button>
+      <button onclick="setTime(50)">50 min</button>
+    </div>
+
+    <div class="timer" id="timer">25:00</div>
+
+    <div class="controls">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+
+    <p class="quote">Stay focused — you’ve got this!</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
