@@ -51,6 +51,56 @@ button {
   transition: background-color 0.2s ease;
 }
 
+.break-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.break-buttons button {
+  background-color: #80cbc4;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 16px;
+  margin: 6px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.break-buttons button:hover {
+  background-color: #4db6ac;
+}
+
+body.dark-mode .break-buttons button {
+  background-color: #00695c !important;
+  color: #eee !important;
+}
+
+body.dark-mode .break-buttons button:hover {
+  background-color: #00796b !important;
+}
+
+.break-section {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px dashed #ccc;
+}
+
+.break-label {
+  font-size: 15px;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+body.dark-mode .break-label {
+  color: #aaa;
+}
+
+
 button:hover {
   background-color: #a63b61;
 }

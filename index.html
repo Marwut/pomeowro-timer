@@ -17,7 +17,18 @@
       <button onclick="setTime(50)">50 min</button>
       <button id="customToggle" onclick="toggleCustomInput()">Custom</button>
     </div>
-    
+
+    <div class="break-section">
+      <p class="break-label">Need a break?</p>
+      <div class="break-buttons">
+        <button onclick="startBreak(5)">5 min break</button>
+        <button onclick="startBreak(10)">10 min break</button>
+        <button onclick="startBreak(15)">15 min break</button>
+      </div>
+    </div>
+
+
+  
     <!-- Custom input area (initially hidden) -->
     <div id="customTimeContainer" style="display: none; text-align: center; margin-top: 10px;">
       <input type="number" id="customTimeInput" placeholder="Minutes" min="1" style="padding: 6px; border-radius: 8px; width: 100px;">
@@ -37,7 +48,7 @@
   <img src="images/output-onlinegiftools.gif" alt="Cat chilling" class="corner-cat">
 
   <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
-  
+
   <script src="script.js"></script>
 </body>
 </html>

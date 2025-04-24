@@ -128,3 +128,30 @@ function toggleDarkMode() {
     : "🌙";
 }
 
+function startBreak(minutes) {
+  clearInterval(timer);
+  time = minutes * 60;
+  updateDisplay();
+
+  timer = setInterval(() => {
+    if (time > 0) {
+      time--;
+      updateDisplay();
+    } else {
+      clearInterval(timer);
+      playMeow();
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("Break's over! Ready to focus again? 🐾");
+      }
+
+      // Ask the user to restart the main timer
+      if (confirm("Break's over! Start a new 25-minute session?")) {
+        setTime(25);
+        startTimer();
+      }
+    }
+  }, 1000);
+}
+
+
