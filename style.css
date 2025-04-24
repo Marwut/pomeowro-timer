@@ -122,18 +122,35 @@ button:hover {
   background-color: #a63b61;
 }
 
-/* 🐱 Corner cat gif */
 .corner-cat {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 20px; /* 👈 THIS is what matters */
   width: 200px;
   height: auto;
   image-rendering: pixelated;
-  opacity: 1;
   pointer-events: none;
   z-index: 999;
+  transition: opacity 0.3s ease;
 }
+
+.day-cat {
+  opacity: 1;
+}
+
+.night-cat {
+  opacity: 0;
+}
+
+body.dark-mode .day-cat {
+  opacity: 0;
+}
+
+body.dark-mode .night-cat {
+  opacity: 1;
+}
+
+
 
 /* 🌚 DARK MODE */
 body.dark-mode {
@@ -198,3 +215,5 @@ body.dark-mode .dark-mode-toggle {
 body.dark-mode #sessionCounter {
   color: #aaa;
 }
+
+

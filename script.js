@@ -1,8 +1,9 @@
 let timer;
 let time = 25 * 60;
 let meowSound;
-let sessionCount = 0;
 let isBreak = false;
+let sessionCount = parseInt(localStorage.getItem("sessionCount")) || 0;
+
 
 
 // 🐱 Load meow on page load (no autoplay)
@@ -14,6 +15,15 @@ window.onload = () => {
   if ("Notification" in window && Notification.permission !== "granted") {
     Notification.requestPermission();
   }
+  
+  // 🌙 Apply saved theme
+ const savedTheme = localStorage.getItem("theme");
+ if (savedTheme === "dark") {
+   document.body.classList.add("dark-mode");
+
+   const btn = document.querySelector(".dark-mode-toggle");
+   if (btn) btn.innerText = "☀️";
+}
 
   startQuoteRotation();
   updateDisplay();
@@ -130,13 +140,16 @@ function startQuoteRotation() {
 }
 
 function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.toggle("dark-mode");
 
+  // 🌙 Save mode to localStorage
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+
+  // Update button emoji
   const btn = document.querySelector(".dark-mode-toggle");
-  btn.innerText = document.body.classList.contains("dark-mode")
-    ? "☀️"
-    : "🌙";
+  btn.innerText = isDark ? "☀️" : "🌙";
 }
+
 
 function startBreak(minutes) {
   clearInterval(timer);
@@ -168,6 +181,7 @@ function startBreak(minutes) {
 function updateSessionCounter() {
   const counter = document.getElementById("sessionCounter");
   counter.innerText = `🍅 Pomodoros completed: ${sessionCount}`;
+  localStorage.setItem("sessionCount", sessionCount); // 💾 Save it
 }
 
 
