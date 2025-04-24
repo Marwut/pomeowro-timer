@@ -1,33 +1,22 @@
+let timer;
+let time = 25 * 60;
+let meowSound;
 
+// 🐱 Load meow on page load (no autoplay)
 window.onload = () => {
-  // Request notification permission
+  meowSound = new Audio("images/Audio/meow.mp3");
+  meowSound.load();
+
+  // Request notification permission once
   if ("Notification" in window && Notification.permission !== "granted") {
     Notification.requestPermission();
   }
 
-  // Attempt to "unlock" audio by playing silently (won't actually play yet)
-  meowSound.play().catch(() => {
-    // Browsers will block this unless the user clicks something
-    console.log("Audio will be unlocked on user interaction.");
-  });
-
-  startQuoteRotation(); // move this here too so it's inside window.onload
+  startQuoteRotation();
+  updateDisplay();
 };
 
-
-// Function to play a meow sound
-const meowSound = new Audio("images/Audio/meow.mp3");
-
-function playMeow() {
-  meowSound.play().catch(err => {
-    console.log("Audio play failed:", err);
-  });
-}
-
-
-let timer;
-let time = 25 * 60;
-
+// ⏰ Update time display
 function updateDisplay() {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -35,6 +24,77 @@ function updateDisplay() {
     `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
 
+// ⏱️ Set session time
+function setTime(minutes) {
+  time = minutes * 60;
+  clearInterval(timer);
+  updateDisplay();
+}
+
+// ▶️ Start timer
+function startTimer() {
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+    if (time > 0) {
+      time--;
+      updateDisplay();
+    } else {
+      clearInterval(timer);
+      playMeow();
+
+      // Notify only if not looking at tab
+      if ("Notification" in window && Notification.permission === "granted") {
+        if (!document.hasFocus()) {
+          new Notification("Pomeowro says: Time’s up! 🐾");
+        } else {
+          console.log("Time’s up (focused tab — no notif)");
+        }
+      } else {
+        alert("Time’s up! 🐾");
+      }
+
+      resetTimer();
+    }
+  }, 1000);
+}
+
+// 🔁 Reset to default 25 minutes
+function resetTimer() {
+  clearInterval(timer);
+  setTime(25);
+}
+
+// 🔊 Play the meow (only if allowed)
+function playMeow() {
+  if (meowSound) {
+    meowSound.play().catch(err => {
+      console.log("Audio play failed:", err);
+    });
+  }
+}
+
+// 🎯 Custom time input
+function toggleCustomInput() {
+  const container = document.getElementById("customTimeContainer");
+  container.style.display = container.style.display === "none" ? "block" : "none";
+}
+
+function setCustomTime() {
+  const input = document.getElementById("customTimeInput").value;
+  const minutes = parseInt(input);
+
+  if (!isNaN(minutes) && minutes > 0) {
+    time = minutes * 60;
+    clearInterval(timer);
+    updateDisplay();
+    document.getElementById("customTimeContainer").style.display = "none";
+  } else {
+    alert("Please enter a valid number greater than 0.");
+  }
+}
+
+// 💬 Rotating quotes
 const quotes = [
   "Stay focused — a well-rested cat always pounces best. 🐾",
   "Take it slow and stretch — even lions do. 🐈‍⬛",
@@ -44,77 +104,17 @@ const quotes = [
   "Every day’s a new chance to land on your feet."
 ];
 
-
-function setTime(minutes) {
-  time = minutes * 60;
-  clearInterval(timer);
-  updateDisplay();
-}
-
-function startTimer() {
-  clearInterval(timer);
-  timer = setInterval(() => {
-    if (time > 0) {
-      time--;
-      updateDisplay();
-    } else {
-      clearInterval(timer);
-      playMeow();
-
-  if (!document.hasFocus() && Notification.permission === "granted") {
-  new Notification("Pomeowro says: Time’s up! 🐾");
-  } else {
-  console.log("Time’s up! (no notification, tab is focused)");
-  }
-
-      resetTimer();
-    }
-  }, 1000);
-}
-
-function resetTimer() {
-  clearInterval(timer);
-  setTime(25);
-}
-
-  function toggleCustomInput() {
-    const container = document.getElementById("customTimeContainer");
-    container.style.display = container.style.display === "none" ? "block" : "none";
-  }
-  
-  function setCustomTime() {
-    const input = document.getElementById("customTimeInput").value;
-    const minutes = parseInt(input);
-  
-    if (!isNaN(minutes) && minutes > 0) {
-      time = minutes * 60;
-      clearInterval(timer);
-      updateDisplay();
-      document.getElementById("customTimeContainer").style.display = "none";
-    } else {
-      alert("Please enter a valid number greater than 0.");
-    }
-  }
-  
-
-  let quoteInterval;
+let quoteInterval;
 
 function startQuoteRotation() {
   let index = 0;
   const quoteElement = document.querySelector(".quote");
 
-  quoteElement.innerText = quotes[index]; // show first one
+  quoteElement.innerText = quotes[index];
 
-  // clear old one if it exists
   clearInterval(quoteInterval);
-
   quoteInterval = setInterval(() => {
     index = (index + 1) % quotes.length;
     quoteElement.innerText = quotes[index];
-  }, 5 * 60 * 1000); // 5 minutes in ms
+  }, 5 * 60 * 1000); // 5 min
 }
-
-startQuoteRotation();
-// Initialize the timer display
-
-  
