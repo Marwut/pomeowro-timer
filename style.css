@@ -188,3 +188,13 @@ body.dark-mode #customTimeContainer button {
 body.dark-mode .dark-mode-toggle {
   background: #666;
 }
+
+#sessionCounter {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #666;
+}
+
+body.dark-mode #sessionCounter {
+  color: #aaa;
+}
