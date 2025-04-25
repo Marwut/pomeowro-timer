@@ -1,58 +1,35 @@
 🐱 Pomeowro Timer
 
-A minimalist and cat-themed Pomodoro timer built with HTML, CSS, and JavaScript.
-Pomeowro helps you focus, take breaks, and stay cute while doing it ⏱️✨
-🔧 Features
+A soft, cat-themed Pomodoro timer that helps you focus in 25-minute sessions — with rotating affirmations, dark mode, meow sounds, and session tracking. Designed for students, coders, creatives, and cats with deadlines.
 
-    🐾 Custom focus session lengths (25, 30, 45, 50 minutes)
+screenshots:
 
-    🧃 Break buttons (5, 10, 15 minutes)
+<img width="1470" alt="Pomeorodoro Default Page" src="https://github.com/user-attachments/assets/548bba61-d098-4b6f-9272-c781af42e947" />
 
-    🍅 Session counter that tracks every focus session
 
-    🌙 Fully functional dark mode toggle
 
-    🔔 Desktop notifications when time’s up
+<!-- optional cute icon or screenshot -->
+✨ Features
 
-    🔊 Meow sound on session completion
+    🍅 25-minute focus sessions with optional custom time
 
-    😺 A cozy cat gif to keep you company
+    🐾 Break timer buttons (5 / 10 / 15 min)
 
-    🎨 Clean UI and responsive design
 
-👉 Check it out on GitHub Pages
+    🌙 Dark mode toggle
 
-📁 Tech Stack:
+    💬 Rotating motivational quotes
 
-    HTML5
+    🔊 Optional meow when time is up
 
-    CSS3
+    📈 Tracks how many Pomodoros you've completed
 
-    JavaScript (Vanilla)
+⚠️ Heads Up
 
-    GitHub Pages (for deployment)
+    Desktop notifications may not appear on Firefox for macOS due to system-level restrictions. Try using Chrome or Safari for best results.
 
-🚀 To Run Locally
+    Meow audio still plays, so you won’t miss your cue 😼
 
-git clone https://github.com/Marwut/pomeowro-timer.git
-cd pomeowro-timer
-open index.html
+🚀 Try It Live
 
-Or use Live Server in VS Code.
-🛠️ Future Features
-
-    🧠 Session stats (total minutes focused)
-
-    💾 Persistent data with localStorage
-
-    🐈 Alternate cat gifs for break mode
-
-    🎉 Celebration after 4 Pomodoros
-
-🐾 Created by
-
-Mariah Haymer
-
-🤍 License
-
-MIT — feel free to remix this for your own focus vibes.
+(https://marwut.github.io/pomeowro-timer/)
