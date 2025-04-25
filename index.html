@@ -10,50 +10,56 @@
   <div class="app">
     <h1 class="title">Pomeowro Timer</h1>
 
+    <!-- 🎯 Focus Session Buttons -->
     <div class="buttons">
-      <button onclick="setTime(25)">25 min</button>
-      <button onclick="setTime(30)">30 min</button>
-      <button onclick="setTime(45)">45 min</button>
-      <button onclick="setTime(50)">50 min</button>
+      <button onclick="startFocusSession(25)">25 min</button>
+      <button onclick="startFocusSession(30)">30 min</button>
+      <button onclick="startFocusSession(45)">45 min</button>
+      <button onclick="startFocusSession(50)">50 min</button>
       <button id="customToggle" onclick="toggleCustomInput()">Custom</button>
     </div>
 
+    <!-- 🧘 Break Buttons -->
     <div class="break-section">
       <p class="break-label">Need a break?</p>
       <div class="break-buttons">
-        <button onclick="startBreak(5)">5 min break</button>
-        <button onclick="startBreak(10)">10 min break</button>
-        <button onclick="startBreak(15)">15 min break</button>
+        <button onclick="startBreakSession(5)">5 min break</button>
+        <button onclick="startBreakSession(10)">10 min break</button>
+        <button onclick="startBreakSession(15)">15 min break</button>
       </div>
     </div>
 
+    <!-- 🍅 Session Count -->
     <p id="sessionCounter">🍅 Pomodoros completed: 0</p>
 
-    <!-- Custom input area (initially hidden) -->
+    <!-- ⏱️ Custom Input -->
     <div id="customTimeContainer" style="display: none; text-align: center; margin-top: 10px;">
       <input type="number" id="customTimeInput" placeholder="Minutes" min="1" style="padding: 6px; border-radius: 8px; width: 100px;">
       <button onclick="setCustomTime()">Set</button>
     </div>
     
+    <!-- ⏲️ Timer Display -->
     <div class="timer" id="timer">25:00</div>
 
+    <!-- ▶️ Timer Controls -->
     <div class="controls">
-      <button onclick="startTimer()">Start</button>
+      <button onclick="startFocusSession()">Start</button>
       <button onclick="resetTimer()">Reset</button>
     </div>
 
+    <!-- 💬 Quote Area -->
     <p class="quote">Stay focused — you’ve got this!</p>
   </div>
 
-  <!-- Day Cat (light mode only) -->
-<img src="images/output-onlinegiftools.gif" class="corner-cat day-cat" alt="Day cat" />
+  <!-- 🐱 Day/Night Cats -->
+  <img src="images/output-onlinegiftools.gif" class="corner-cat day-cat" alt="Day cat" />
+  <img src="images/greycat.gif" class="corner-cat night-cat" alt="Night cat" />
 
-<!-- Night Cat (dark mode only) -->
-<img src="images/greycat.gif" class="corner-cat night-cat" alt="Night cat" />
-
-
+  <!-- 🌙 Theme Toggle -->
   <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
 
+  
+  <!-- 📜 JS Logic -->
   <script src="script.js"></script>
 </body>
 </html>

@@ -2,34 +2,31 @@ let timer;
 let time = 25 * 60;
 let meowSound;
 let isBreak = false;
+let customTimeSet = false;
 let sessionCount = parseInt(localStorage.getItem("sessionCount")) || 0;
 
-
-
-// 🐱 Load meow on page load (no autoplay)
+// 🐱 Load on page
 window.onload = () => {
   meowSound = new Audio("images/Audio/meow.mp3");
   meowSound.load();
 
-  // Request notification permission once
   if ("Notification" in window && Notification.permission !== "granted") {
     Notification.requestPermission();
   }
-  
-  // 🌙 Apply saved theme
- const savedTheme = localStorage.getItem("theme");
- if (savedTheme === "dark") {
-   document.body.classList.add("dark-mode");
 
-   const btn = document.querySelector(".dark-mode-toggle");
-   if (btn) btn.innerText = "☀️";
-}
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    const btn = document.querySelector(".dark-mode-toggle");
+    if (btn) btn.innerText = "☀️";
+  }
 
-  startQuoteRotation();
   updateDisplay();
+  updateSessionCounter();
+  startQuoteRotation();
 };
 
-// ⏰ Update time display
+// ⏰ Display
 function updateDisplay() {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -37,14 +34,56 @@ function updateDisplay() {
     `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
 
-// ⏱️ Set session time
+// 🍅 Counter
+function updateSessionCounter() {
+  const counter = document.getElementById("sessionCounter");
+  counter.innerText = `🍅 Pomodoros completed: ${sessionCount}`;
+  localStorage.setItem("sessionCount", sessionCount);
+}
+
+// 🔊 Meow
+function playMeow() {
+  if (meowSound) {
+    meowSound.play().catch(err => {
+      console.log("Audio play failed:", err);
+    });
+  }
+}
+
+// 🔢 Time
 function setTime(minutes) {
   time = minutes * 60;
   clearInterval(timer);
   updateDisplay();
-  isBreak = false; // this is a work session
 }
 
+// 🎯 Focus Session
+function startFocusSession(minutes = 25) {
+  isBreak = false;
+
+  if (!customTimeSet) {
+    setTime(minutes);
+  } else {
+    customTimeSet = false; // reset after using custom
+  }
+
+  startTimer();
+}
+
+// 🧘 Break Session
+function startBreakSession(minutes = 5) {
+  isBreak = true;
+  setTime(minutes);
+  startTimer();
+}
+
+// 🧼 Reset
+function resetTimer() {
+  clearInterval(timer);
+  setTime(25);
+}
+
+// ▶️ Timer
 function startTimer() {
   clearInterval(timer);
 
@@ -56,13 +95,11 @@ function startTimer() {
       clearInterval(timer);
       playMeow();
 
-      // 🧠 Only count if it's a focus session
       if (!isBreak) {
         sessionCount++;
         updateSessionCounter();
       }
 
-      // 🔔 Notify (only if tab isn't focused)
       if ("Notification" in window && Notification.permission === "granted") {
         if (!document.hasFocus()) {
           new Notification("Pomeowro says: Time’s up! 🐾");
@@ -73,28 +110,27 @@ function startTimer() {
         alert("Time’s up! 🐾");
       }
 
+      if (isBreak) {
+        if (confirm("Break's over! Start a new 25-minute session?")) {
+          startFocusSession();
+        }
+      }
+
       resetTimer();
     }
   }, 1000);
 }
 
+// 🌈 Theme toggle
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle("dark-mode");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 
-// 🔁 Reset to default 25 minutes
-function resetTimer() {
-  clearInterval(timer);
-  setTime(25);
+  const btn = document.querySelector(".dark-mode-toggle");
+  btn.innerText = isDark ? "☀️" : "🌙";
 }
 
-// 🔊 Play the meow (only if allowed)
-function playMeow() {
-  if (meowSound) {
-    meowSound.play().catch(err => {
-      console.log("Audio play failed:", err);
-    });
-  }
-}
-
-// 🎯 Custom time input
+// 📝 Custom Time
 function toggleCustomInput() {
   const container = document.getElementById("customTimeContainer");
   container.style.display = container.style.display === "none" ? "block" : "none";
@@ -105,9 +141,9 @@ function setCustomTime() {
   const minutes = parseInt(input);
 
   if (!isNaN(minutes) && minutes > 0) {
-    time = minutes * 60;
-    clearInterval(timer);
-    updateDisplay();
+    isBreak = false;
+    setTime(minutes);
+    customTimeSet = true;
     document.getElementById("customTimeContainer").style.display = "none";
   } else {
     alert("Please enter a valid number greater than 0.");
@@ -136,52 +172,8 @@ function startQuoteRotation() {
   quoteInterval = setInterval(() => {
     index = (index + 1) % quotes.length;
     quoteElement.innerText = quotes[index];
-  }, 5 * 60 * 1000); // 5 min
+  }, 5 * 60 * 1000); // every 5 mins
 }
 
-function toggleDarkMode() {
-  const isDark = document.body.classList.toggle("dark-mode");
-
-  // 🌙 Save mode to localStorage
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-
-  // Update button emoji
-  const btn = document.querySelector(".dark-mode-toggle");
-  btn.innerText = isDark ? "☀️" : "🌙";
-}
-
-
-function startBreak(minutes) {
-  clearInterval(timer);
-  time = minutes * 60;
-  updateDisplay();
-  isBreak = true; 
-
-  timer = setInterval(() => {
-    if (time > 0) {
-      time--;
-      updateDisplay();
-    } else {
-      clearInterval(timer);
-      playMeow();
-
-      if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("Break's over! Ready to focus again? 🐾");
-      }
-
-      // Ask the user to restart the main timer
-      if (confirm("Break's over! Start a new 25-minute session?")) {
-        setTime(25);
-        startTimer();
-      }
-    }
-  }, 1000);
-}
-
-function updateSessionCounter() {
-  const counter = document.getElementById("sessionCounter");
-  counter.innerText = `🍅 Pomodoros completed: ${sessionCount}`;
-  localStorage.setItem("sessionCount", sessionCount); // 💾 Save it
-}
 
 
